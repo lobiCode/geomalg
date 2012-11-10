@@ -8,26 +8,19 @@
  * Description: Builds KdTree 
  *************************************************************************/
 
-public class KdTreeJG {
+public class KdTree {
 	
-	private  class Node {
-		
-		private Point p; 
-		//left/right node respectively of this node
-		private Node lb;
-		private Node rt;
-
-		public Node(Point p) {
-			this.p = p;
-		}
-	}
-	
-	private Node root;
-	//number of nodes in the tree
+	private KdNode root;
+	//number of KdNodes in the tree
 	private int N; 			
 
-	public KdTree() {
-	} 
+	public void KdTree() {
+		root = null;
+	}
+
+	public KdNode root() {
+		return root;
+	}
 
 	public boolean isEmpty() {                      
 		return N == 0; 
@@ -41,14 +34,14 @@ public class KdTreeJG {
 	public void insert(Point p) {                  
 		
 		if (root == null) {
-		   root = new Node(p);
+		   root = new KdNode(p);
 		   N++;
 		   return;
 		}
         
 		//if odd split vertical, else split horizontal
 		int depth = 1; 
-		Node cur = root;
+		KdNode cur = root;
 		
 		while (cur != null) {
 			 //point is already in tree
@@ -56,9 +49,9 @@ public class KdTreeJG {
 				return;
 			 }
 			 //split vertical or horizontal
-			 if ((depth%2 == 1 && p.x() < cur.p.x()) || (depth%2 == 0 && p.y() < cur.p.y())) {
+			 if ((depth%2 == 1 && p.x < cur.p.x) || (depth%2 == 0 && p.y < cur.p.y)) {
 				if (cur.lb == null) {
-					cur.lb = new Node(p);
+					cur.lb = new KdNode(p);
 					N++;
 					return;
 				}
@@ -68,7 +61,7 @@ public class KdTreeJG {
 			}
 			else {
 				if (cur.rt == null) {
-					cur.rt = new Node(p);
+					cur.rt = new KdNode(p);
 					N++;
 					return;
 				}
@@ -88,14 +81,14 @@ public class KdTreeJG {
 		}
 
 		int depth = 1;
-		Node cur = root;
+		KdNode cur = root;
 		
 		while (cur != null) {
 			if (cur.p.compareTo(p) == 0) {
 				return true;
 			}
 			if (depth % 2 == 1) {
-				if ((depth%2 == 1 && p.x() < cur.p.x()) || (depth%2 == 0 && p.y() < cur.p.y())) {
+				if ((depth%2 == 1 && p.x < cur.p.x) || (depth%2 == 0 && p.y < cur.p.y)) {
 					cur = cur.lb;
 				}
 				else {
