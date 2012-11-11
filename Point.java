@@ -38,8 +38,8 @@ public class Point implements Comparable<Point> {
 
 	//returns Euclidean distance of this and p
 	public double distanceTo(Point p) {
-		double dx = this.x - p.x;
-		double dy = this.y - p.y;
+		double dx = x - p.x;
+		double dy = y - p.y;
 
 		return Math.sqrt((dx*dx) + (dy*dy));
 	}
