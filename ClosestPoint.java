@@ -43,9 +43,9 @@ public class ClosestPoint {
 		}
 		
 		KdNode up;					//go to other side where point p is
-		KdNode down;                //go to side where point p is
-		Point champ;                //point which is closest to p
-		Point other;                //maybe another point is closer than champ
+		KdNode down;				//go to side where point p is
+		Point champ;				//point which is closest to p
+		Point other;				//maybe another point is closer than champ
 		double dist;
 		double perpendicularDist;
        
@@ -120,7 +120,7 @@ public class ClosestPoint {
 			scanPoint = new Scanner(points);
 			scanClosest = new Scanner(querryPoints);
 
-			querryPointquerryPointquerryPointssswhile(scanPoint.hasNextDouble()) {
+			while(scanPoint.hasNextDouble()) {
 				double x = scanPoint.nextDouble();
 				double y = scanPoint.nextDouble();
 				p.add(new Point(x, y));
