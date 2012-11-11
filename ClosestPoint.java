@@ -5,20 +5,20 @@
  * Compilation: javac ClosestPoint.java
  * Dependencies: Point.java, KdTree.java, KdNode.java  
  *
- * Description: Find closest point
+ * Description: Finds the closest points from a specified set of points
  *
- * % java ClosestPoint  set_of_points.txt set_of_closest_points.txt
+ * % java ClosestPoint  set_of_points.txt set_of_querry_points.txt
  * 0.4 0.5
  * 0.5 0.3
  * 0.34 0.56
  * ...
  *************************************************************************/
 
-import java.util.Queue;
+import java.io.File;
 import java.util.Scanner;
 import java.util.LinkedList;
-import java.io.File;
 import java.io.FileNotFoundException;
+
 public class ClosestPoint {
 	
 	KdTree kdtree;
@@ -112,15 +112,15 @@ public class ClosestPoint {
 		Scanner scanClosest;
 		ClosestPoint closest;
 		File points = new File(args[0]);
-		File closestPoint = new File(args[1]);
-		Queue<Point> p = new LinkedList<Point>();
-		Queue<Point> closestP = new LinkedList<Point>();
+		File querryPoints = new File(args[1]);
+		LinkedList<Point> p = new LinkedList<Point>();
+		LinkedList<Point> closestP = new LinkedList<Point>();
 
 		try {
 			scanPoint = new Scanner(points);
-			scanClosest = new Scanner(closestPoint);
+			scanClosest = new Scanner(querryPoints);
 
-			while(scanPoint.hasNextDouble()) {
+			querryPointquerryPointquerryPointssswhile(scanPoint.hasNextDouble()) {
 				double x = scanPoint.nextDouble();
 				double y = scanPoint.nextDouble();
 				p.add(new Point(x, y));
