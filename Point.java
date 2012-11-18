@@ -12,7 +12,6 @@ import java.util.Comparator;
 
 public class Point implements Comparable<Point> {
 	
-	public final Comparator<Point> X_ORDER = new XOrder();
 	public final Comparator<Point> Y_ORDER = new YOrder();
 
 	public final double x;
@@ -23,21 +22,22 @@ public class Point implements Comparable<Point> {
 		this.y = y;
 	}
 
-	// comparing y-coordinates and breaking ties by x-coordinates
+	// comparing x-coordinates and breaking ties by y-coordinates
 	public int compareTo(Point p) {
 
-		if (y < p.y) {
-			return -1;
-		}
-		if (y > p.y) {
-			return 1;
-		}
 		if (x < p.x) {
 			return -1;
 		}
 		if (x > p.x) {
 			return 1;
 		}
+		if (y < p.y) {
+			return -1;
+		}
+		if (y > p.y) {
+			return 1;
+		}
+
 		return 0;
 	}
 	
@@ -47,20 +47,6 @@ public class Point implements Comparable<Point> {
 		double dy = y - p.y;
 
 		return Math.sqrt((dx*dx) + (dy*dy));
-	}
-	
-	private class XOrder implements Comparator<Point> {
-
-        public int compare(Point p1, Point p2) {
-
-            if (p1.x < p2.x) {
-				return -1;
-			}          
-			if (p1.x > p2.x) {
-                return 1;
-			}
-            return 0;
-		}
 	}
 	
 	private class YOrder implements Comparator<Point> {
@@ -76,7 +62,7 @@ public class Point implements Comparable<Point> {
 			return 0;
 		}
 	}
-	
+
 	// convert to string
 	public String toString() {
 		return "(" + x + ", " + y + ")";
