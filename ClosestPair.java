@@ -38,7 +38,7 @@ public class ClosestPair {
 		}
 	}
 
-	private final int bfTreshlod = 16;
+	private final int bfThreshold = 16;
 	private ClosestDist champion; 
 
 	public ClosestPair(Point[] points) {
@@ -68,7 +68,7 @@ public class ClosestPair {
 	
 	private ClosestDist FindClosestPair(Point[] sortX, Point[] sortY) {
 		
-		if (sortX.length <= bfTreshlod) {
+		if (sortX.length <= bfThreshold) {
 			return BruteDist(sortX);
 		}
 
@@ -119,7 +119,7 @@ public class ClosestPair {
 		}
 		
 		for (int i = 0; i < totalYS; i++) {
-			for (int j = i+1; j <= i+7  && j < totalYS; j++) {
+			for (int j = i+1; j < totalYS && (sortYS[j].y - sortYS[i].y < champPair.dist); j++) {
 				if (sortYS[i].distanceTo(sortYS[j]) < champPair.dist) {
 					champPair = new ClosestDist(sortYS[i], sortYS[j], sortYS[i].distanceTo(sortYS[j]));
 				}
