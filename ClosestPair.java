@@ -1,4 +1,4 @@
-/*************************************************************************
+/***************************************************************************
  * Name: Uros Slana
  * Email: urossla(at)gmail.com
  *
@@ -38,88 +38,93 @@ public class ClosestPair {
 		}
 	}
 
+	private Point[] sortX;
+	private ClosestDist champion;
 	private final int bfThreshold = 16;
-	private ClosestDist champion; 
 
 	public ClosestPair(Point[] points) {
 
 		int N = points.length;
-		Point[] xOrder = new Point[N];
-		Point[] yOrder = new Point[N];
+		sortX = new Point[N];
 
 		for (int i = 0; i < N; i++) {
-			xOrder[i] = points[i];
-			yOrder[i] = points[i];
+			sortX[i] = points[i];
 		}
 
-		Arrays.sort(xOrder);
+		Arrays.sort(sortX);
 
 		for (int i = 0; i < N-1; i++) {
-			if (xOrder[i].compareTo(xOrder[i+1]) == 0) {
-				champion = new ClosestDist(xOrder[i], xOrder[i+1], 0.0);
+			if (sortX[i].compareTo(sortX[i+1]) == 0) {
+				champion = new ClosestDist(sortX[i], sortX[i+1], 0.0);
 				return;
 			}
 		}
 
-		Arrays.sort(yOrder, new Point(0, 0).Y_ORDER);
-
-		champion = FindClosestPair(xOrder, yOrder);
+		champion = FindClosestPair(0, N-1);
 	}
 	
-	private ClosestDist FindClosestPair(Point[] sortX, Point[] sortY) {
-		
-		if (sortX.length <= bfThreshold) {
-			return BruteDist(sortX);
+	private ClosestDist FindClosestPair(int lo, int hi) {
+	
+		if (hi-lo <= bfThreshold) {
+			return BruteDist(lo, hi);
 		}
 
-		int lY = 0;
-		int rY = 0;
+		int iYS = 0;
 		int totalYS = 0;
-		int xLength = sortX.length;
-		//length of left part of array after split
-		int lengthL = xLength/2;
-		//length of right part of array after split
-		int lengthR = xLength - lengthL;							
+		int mid = lo + (hi-lo)/2;
 		ClosestDist leftPair;
 		ClosestDist rightPair;
 		ClosestDist champPair;
-		Point[] sortXL = new Point[lengthL];
-		Point[] sortXR = new Point[lengthR];
-		Point[] sortYL = new Point[lengthL];
-		Point[] sortYR = new Point[lengthR];
-		//array sort Y whit all points not in the 2*chapmDist.dist-wide verti. strip removed
-		Point[] sortYS = new Point[xLength];						
-		
-		//copy left part of sortX to sortXL
-		System.arraycopy(sortX, 0, sortXL, 0, lengthL);
-		//copy right part of sortX to sortXR
-		System.arraycopy(sortX, lengthL, sortXR, 0, lengthR);
-		
-		//build sortYL & sortYR
-		for (int i = 0; i < xLength; i++) {
-			if (sortY[i].x < sortX[lengthL-1].x 
-					|| (sortY[i].x == sortX[lengthL-1].x && sortY[i].y <= sortX[lengthL-1].y)) {
-				sortYL[lY++] = sortY[i];
-				}
-			else {
-				sortYR[rY++] = sortY[i];
-			}
-		}
 
-		leftPair = FindClosestPair(sortXL, sortYL);
-		rightPair = FindClosestPair(sortXR, sortYR);
+		leftPair = FindClosestPair(lo, mid);
+		rightPair = FindClosestPair(mid+1, hi);
 
 		champPair = leftPair.dist < rightPair.dist ? leftPair : rightPair;
 		
-		//build sortYS
-		for (int i = 0; i < xLength; i++) {
-			if (Math.abs(sortY[i].x - sortXL[lengthL-1].x) < champPair.dist) {
-				sortYS[totalYS++] = sortY[i];
+		for (int i = mid; i >= lo; i--){
+			if (sortX[mid].x - sortX[i].x < champPair.dist) {
+				totalYS++;
+			}
+			else {
+				break;
 			}
 		}
 		
+		for (int i = mid+1; i<= hi; i++){
+			if (sortX[i].x - sortX[mid].x < champPair.dist) {
+				totalYS++;
+			}
+			else {
+				break;
+			}
+		}
+
+		//array sort Y whit all points not in the 2*chapmDist.dist-wide verti. strip removed
+		Point[] sortYS = new Point[totalYS];	
+
+		//build sortYS
+		for (int i = mid; i >= lo; i--) {
+			if (sortX[mid].x - sortX[i].x < champPair.dist) {
+				sortYS[iYS++] = sortX[i];
+			}
+			else {
+				break;
+			}
+		}
+		
+		for (int i = mid+1; i <= hi; i++) {
+			if (sortX[i].x - sortX[mid].x < champPair.dist) {
+				sortYS[iYS++] = sortX[i];
+			}
+			else {
+				break;
+			}
+		}
+
+		Arrays.sort(sortYS, new Point(0, 0).Y_ORDER);
+		
 		for (int i = 0; i < totalYS; i++) {
-			for (int j = i+1; j < totalYS && (sortYS[j].y - sortYS[i].y < champPair.dist); j++) {
+			for (int j = i+1;  j < totalYS && (sortYS[j].y - sortYS[i].y < champPair.dist); j++) {
 				if (sortYS[i].distanceTo(sortYS[j]) < champPair.dist) {
 					champPair = new ClosestDist(sortYS[i], sortYS[j], sortYS[i].distanceTo(sortYS[j]));
 				}
@@ -129,20 +134,20 @@ public class ClosestPair {
 		return champPair;
 	}
 
-	private ClosestDist BruteDist(Point[] sortX) {
+	private ClosestDist BruteDist(int lo,  int hi) {
 		
 		ClosestDist champPair = null;
-		int xLength = sortX.length;
 		double min = Double.POSITIVE_INFINITY;
-		
-		for (int i=0; i < xLength; i++) {
-			for (int j=i+1; j < xLength; j++) {
+	
+		for (int i=lo; i <= hi; i++) {
+			for (int j=i+1; j <= hi; j++) {
 				if (sortX[i].distanceTo(sortX[j]) < min) {
 					min = sortX[i].distanceTo(sortX[j]);
 					champPair = new ClosestDist(sortX[i], sortX[j], min);
 				}
 			}
 		}
+
 		return champPair;
 	}
 	
@@ -171,7 +176,7 @@ public class ClosestPair {
 		}catch (FileNotFoundException e1) {
 			e1.printStackTrace();
 		}
-		
+
 		closestPair = new ClosestPair(points);
 		System.out.println("Dist.=" + closestPair.champion.dist
 				+ " P1= " + closestPair.champion.p1 + " P2= " +  closestPair.champion.p2 );
