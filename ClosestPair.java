@@ -81,44 +81,24 @@ public class ClosestPair {
 
 		champPair = leftPair.dist < rightPair.dist ? leftPair : rightPair;
 		
-		for (int i = mid; i >= lo; i--){
-			if (sortX[mid].x - sortX[i].x < champPair.dist) {
-				totalYS++;
-			}
-			else {
-				break;
-			}
+		for (int i = mid; i >= lo && (sortX[mid].x - sortX[i].x < champPair.dist); i--) {
+			totalYS++;
 		}
 		
-		for (int i = mid+1; i<= hi; i++){
-			if (sortX[i].x - sortX[mid].x < champPair.dist) {
-				totalYS++;
-			}
-			else {
-				break;
-			}
+		for (int i = mid+1; i<= hi && (sortX[i].x - sortX[mid].x < champPair.dist); i++){
+			totalYS++;
 		}
 
 		//array sort Y whit all points not in the 2*chapmDist.dist-wide verti. strip removed
 		Point[] sortYS = new Point[totalYS];	
 
 		//build sortYS
-		for (int i = mid; i >= lo; i--) {
-			if (sortX[mid].x - sortX[i].x < champPair.dist) {
-				sortYS[iYS++] = sortX[i];
-			}
-			else {
-				break;
-			}
+		for (int i = mid; i >= lo && (sortX[mid].x - sortX[i].x < champPair.dist); i--) {
+			sortYS[iYS++] = sortX[i];
 		}
 		
-		for (int i = mid+1; i <= hi; i++) {
-			if (sortX[i].x - sortX[mid].x < champPair.dist) {
-				sortYS[iYS++] = sortX[i];
-			}
-			else {
-				break;
-			}
+		for (int i = mid+1; i<= hi && (sortX[i].x - sortX[mid].x < champPair.dist); i++) { 
+			sortYS[iYS++] = sortX[i];
 		}
 
 		Arrays.sort(sortYS, new Point(0, 0).Y_ORDER);
