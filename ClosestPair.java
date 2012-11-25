@@ -101,7 +101,7 @@ public class ClosestPair {
 			sortYS[iYS++] = sortX[i];
 		}
 
-		Arrays.sort(sortYS, new Point(0, 0).Y_ORDER);
+		Arrays.sort(sortYS, Point.Y_ORDER);
 		
 		for (int i = 0; i < totalYS; i++) {
 			for (int j = i+1;  j < totalYS && (sortYS[j].y - sortYS[i].y < champPair.dist); j++) {
