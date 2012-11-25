@@ -12,7 +12,7 @@ import java.util.Comparator;
 
 public class Point implements Comparable<Point> {
 	
-	public final Comparator<Point> Y_ORDER = new YOrder();
+	public static final Comparator<Point> Y_ORDER = new YOrder();
 
 	public final double x;
 	public final double y;
@@ -49,7 +49,7 @@ public class Point implements Comparable<Point> {
 		return Math.sqrt((dx*dx) + (dy*dy));
 	}
 	
-	private class YOrder implements Comparator<Point> {
+	private static class YOrder implements Comparator<Point> {
 
 		public int compare(Point p1, Point p2) {
 
