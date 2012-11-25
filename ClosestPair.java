@@ -84,19 +84,23 @@ public class ClosestPair {
 		Point[] sortYS = new Point[hi-lo+1];	
 
 		//build sortYS
-		for (int i = mid; i >= lo 
-				&& (sortX[mid].x - sortX[i].x < champPair.dist); i--) {
+		int i = mid;
+		while (i >= lo && sortX[mid].x - sortX[i].x < champPair.dist) {
 			sortYS[iYS++] = sortX[i];
+			i--;
 		}
 		
-		for (int i = mid+1; i<= hi && (sortX[i].x - sortX[mid].x < champPair.dist); i++) { 
+		i = mid+1;
+		while (i<= hi && sortX[i].x - sortX[mid].x < champPair.dist) { 
 			sortYS[iYS++] = sortX[i];
+			i++;
 		}
 
 		Arrays.sort(sortYS, 0, iYS, Point.Y_ORDER);
 		
-		for (int i = 0; i < iYS; i++) {
-			for (int j = i+1;  j < iYS && (sortYS[j].y - sortYS[i].y < champPair.dist); j++) {
+		for (i = 0; i < iYS; i++) {
+			for (int j = i+1;  j < iYS
+					&& (Math.abs(sortYS[j].y - sortYS[i].y) < champPair.dist); j++) {
 				if (sortYS[i].distanceTo(sortYS[j]) < champPair.dist) {
 					champPair = new ClosestDist(sortYS[i], sortYS[j], sortYS[i].distanceTo(sortYS[j]));
 				}
