@@ -73,6 +73,7 @@ public class ClosestPair {
 
 		int iYS = 0;
 		int mid = lo + (hi-lo)/2;
+		double dist;
 		ClosestDist leftPair;
 		ClosestDist rightPair;
 		ClosestDist champPair;
@@ -102,8 +103,9 @@ public class ClosestPair {
 		for (i = 0; i < iYS; i++) {
 			for (int j = i+1;  j < iYS
 					&& (Math.abs(sortYS[j].y - sortYS[i].y) < champPair.dist); j++) {
-				if (sortYS[i].distanceTo(sortYS[j]) < champPair.dist) {
-					champPair = new ClosestDist(sortYS[i], sortYS[j], sortYS[i].distanceTo(sortYS[j]));
+				dist = sortYS[i].distanceTo(sortYS[j]); 
+				if (dist < champPair.dist) {
+					champPair = new ClosestDist(sortYS[i], sortYS[j], dist);
 				}
 			}
 		}
