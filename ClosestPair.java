@@ -38,15 +38,17 @@ public class ClosestPair {
 		}
 	}
 
+	private Point[] aux;
 	private Point[] sortX;
 	private ClosestDist champion;
-	private final int bfThreshold = 16;
+	private final int bfThreshold = 50;
 
 	public ClosestPair(Point[] points) {
 
 		int N = points.length;
 		sortX = new Point[N];
-
+		aux = new Point[N];
+		
 		for (int i = 0; i < N; i++) {
 			sortX[i] = points[i];
 		}
@@ -75,29 +77,28 @@ public class ClosestPair {
 		ClosestDist rightPair;
 		ClosestDist champPair;
 
+		//save mid point before sort by Y and merge
+		Point midle = sortX[mid];
+
 		leftPair = FindClosestPair(lo, mid);
 		rightPair = FindClosestPair(mid+1, hi);
 
 		champPair = leftPair.dist < rightPair.dist ? leftPair : rightPair;
 		
+		merge(lo, mid, hi);
+		
 		//array sort Y whit all points not in the 2*chapmDist.dist-wide verti. strip removed
 		Point[] sortYS = new Point[hi-lo+1];	
 
 		//build sortYS
-		int i = mid;
-		while (i >= lo && sortX[mid].x - sortX[i].x < champPair.dist) {
-			sortYS[iYS++] = sortX[i];
-			i--;
-		}
-		
-		i = mid+1;
-		while (i<= hi && sortX[i].x - sortX[mid].x < champPair.dist) { 
-			sortYS[iYS++] = sortX[i];
+		int i = lo;
+		while (i <= hi) {
+			if ( Math.abs(midle.x - sortX[i].x) < champPair.dist) {
+				sortYS[iYS++] = sortX[i];
+			}
 			i++;
 		}
 
-		Arrays.sort(sortYS, 0, iYS, Point.Y_ORDER);
-		
 		for (i = 0; i < iYS; i++) {
 			for (int j = i+1;  j < iYS
 					&& (Math.abs(sortYS[j].y - sortYS[i].y) < champPair.dist); j++) {
@@ -114,7 +115,9 @@ public class ClosestPair {
 		
 		ClosestDist champPair = null;
 		double min = Double.POSITIVE_INFINITY;
-	
+
+		Arrays.sort(sortX, lo, hi+1, Point.Y_ORDER);
+
 		for (int i=lo; i <= hi; i++) {
 			for (int j=i+1; j <= hi; j++) {
 				if (sortX[i].distanceTo(sortX[j]) < min) {
@@ -126,6 +129,31 @@ public class ClosestPair {
 
 		return champPair;
 	}
+
+	private void merge(int lo, int mid, int hi) {
+		int i= lo;
+		int j= mid+1;
+
+		for (int k = lo; k <= hi; k++) {
+			aux[k] = sortX[k];
+		}
+
+		for (int k = lo; k <= hi; k++) {
+			if (i > mid) {
+				sortX[k] = aux[j++];
+			}
+			else if (j > hi) {
+				sortX[k] = aux[i++];
+			}
+			else if (Point.Y_ORDER.compare(aux[j], aux[i]) == -1) {
+				sortX[k] = aux[j++];
+			}
+			else {
+				sortX[k] = aux[i++];
+			}
+		}
+	}
+
 	
 	public static void main(String[] args) {
 
