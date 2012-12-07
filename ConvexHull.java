@@ -6,7 +6,7 @@
  * 
  * Dependencies: Point.java
  * 
- * Description: Algorithm finds convex hull in O(n lg n) 
+ * Description: The algorithm finds the convex hull of a set of n points in O(n lg n) 
  *
  * % java ConvexHull set_of_points.txt NUMBER_OF_POINTS
  * 0.1 0.5
@@ -44,11 +44,9 @@ public class ConvexHull {
 			}
 		}
 		
-		if (min != 0) {
-			Point swap = polarSort[0];
-			polarSort[0] = polarSort[min];
-			polarSort[min] = swap;
-		}
+		Point swap = polarSort[0];
+		polarSort[0] = polarSort[min];
+		polarSort[min] = swap;
 
 		Arrays.sort(polarSort, polarSort[0].POLAR_ORDER);
 	}
