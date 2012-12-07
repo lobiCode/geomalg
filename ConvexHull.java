@@ -6,7 +6,7 @@
  * 
  * Dependencies: Point.java
  * 
- * Description: Algorithm finds closest convex hull in O(n lg n) 
+ * Description: Algorithm finds convex hull in O(n lg n) 
  *
  * % java ConvexHull set_of_points.txt NUMBER_OF_POINTS
  * 0.1 0.5
