@@ -87,13 +87,11 @@ public class KdTree {
 			if (cur.p.compareTo(p) == 0) {
 				return true;
 			}
-			if (depth % 2 == 1) {
-				if ((depth%2 == 1 && p.x < cur.p.x) || (depth%2 == 0 && p.y < cur.p.y)) {
-					cur = cur.lb;
-				}
-				else {
-					cur = cur.rt;
-				}
+			if ((depth%2 == 1 && p.x < cur.p.x) || (depth%2 == 0 && p.y < cur.p.y)) {
+				cur = cur.lb;
+			}
+			else {
+				cur = cur.rt;
 			}
 			depth++;
 		}
