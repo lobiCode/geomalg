@@ -38,17 +38,10 @@ public class ConvexHull {
 
 		for (int i = 0; i < N; i++) {
 			polarSort[i]  = points[i];
-			if (polarSort[min].y > polarSort[i].y 
-					|| (polarSort[min].y == polarSort[i].y && polarSort[min].x > polarSort[i].x)) {
-				min = i;
-			}
 		}
 		
-		Point swap = polarSort[0];
-		polarSort[0] = polarSort[min];
-		polarSort[min] = swap;
-
-		Arrays.sort(polarSort, polarSort[0].POLAR_ORDER);
+		Arrays.sort(polarSort, Point.Y_ORDER);
+		Arrays.sort(polarSort, 1, N,  polarSort[0].POLAR_ORDER);
 	}
 	
 	public Iterable<Point> GrahamScan() {
